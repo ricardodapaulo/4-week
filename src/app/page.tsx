@@ -1,8 +1,7 @@
+import Image from "next/image"
 import Link from "next/link"
 import {
   Card,
-  CardContent,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -26,10 +25,10 @@ import { ArrowUpCircle, PlusCircle, ChevronDown } from "lucide-react"
  */
 
 const CURRENCY_ACCOUNTS = [
-  { code: "EUR", label: "EUR", accountId: "51568", balance: "1.00", flag: "🇪🇺" },
-  { code: "AUD", label: "AUD", accountId: "30779", balance: "0.00", flag: "🇦🇺" },
-  { code: "CAD", label: "CAD", accountId: "15376", balance: "0.00", flag: "🇨🇦" },
-  { code: "GBP", label: "GBP", accountId: "13159", balance: "0.00", flag: "🇬🇧" },
+  { code: "EUR", label: "EUR", accountId: "51568", balance: "1.00", flag: "/flags/eur.png" },
+  { code: "AUD", label: "AUD", accountId: "30779", balance: "0.00", flag: "/flags/aud.png" },
+  { code: "CAD", label: "CAD", accountId: "15376", balance: "0.00", flag: "/flags/cad.png" },
+  { code: "GBP", label: "GBP", accountId: "13159", balance: "0.00", flag: "/flags/gbp.png" },
 ]
 
 const RECENT_TRANSACTIONS = [
@@ -42,9 +41,9 @@ export default function Home() {
   return (
     <div className="flex flex-1 flex-col gap-8 p-6">
       {/* Total balance + actions */}
-      <section className="space-y-4">
+      <section className="space-y-2">
         <h2 className="text-sm font-medium text-muted-foreground">Total balance</h2>
-        <p className="text-3xl font-bold tracking-tight">1.00 EUR</p>
+        <p className="text-3xl font-bold tracking-tight">2.00 EUR</p>
         <div className="flex flex-wrap gap-2">
           <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">
             Send
@@ -68,19 +67,30 @@ export default function Home() {
       </section>
 
       {/* Currency account cards */}
-      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {CURRENCY_ACCOUNTS.map((account) => (
-          <Card key={account.code} className="bg-muted/50">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <span className="text-lg" aria-hidden>{account.flag}</span>
-              <CardTitle className="text-base font-medium">{account.label}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-1">
-              <p className="text-xs text-muted-foreground">Account - {account.accountId}</p>
-              <p className="text-2xl font-bold">{account.balance}</p>
-            </CardContent>
-          </Card>
-        ))}
+      <section
+        aria-label="Currency accounts"
+        className="-mx-6 overflow-x-auto px-6"
+      >
+        <div className="flex snap-x snap-mandatory gap-4">
+          {CURRENCY_ACCOUNTS.map((account) => (
+            <Card key={account.code} className="w-60 shrink-0 snap-start gap-0 p-4 bg-muted/50">
+              <div className="grid grid-cols-[48px_1fr] items-start gap-x-3">
+                <Image
+                  src={account.flag}
+                  alt=""
+                  width={48}
+                  height={48}
+                  className="size-12 shrink-0 rounded-full"
+                />
+                <div className="min-w-0 space-y-1">
+                  <CardTitle className="text-base font-medium">{account.label}</CardTitle>
+                  <p className="text-xs text-muted-foreground">Account - {account.accountId}</p>
+                  <p className="text-2xl font-bold leading-none">{account.balance}</p>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
       </section>
 
       {/* Recent transactions */}
